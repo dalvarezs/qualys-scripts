@@ -17,7 +17,7 @@ from datetime import datetime
 
 
 __author__ = 'David Alvarez @dalvarez_s'
-__version__ = '0.3'
+__version__ = '0.4'
 __doc__ = 'Connects to Qualys API. Get list of Map reports finished from current and previous months and extract hosts without DNSname ' \
           'UseCase: Useful for identifying live hosts without DNSname'
 
@@ -114,6 +114,8 @@ def main():
     else:
         username, password, certpassword = QUSER, QPASSWD, QCERT_PASSWD
 
+    with open("mapscan.csv", "a") as f:
+        f.write("IP;Operating System;Reason"+"\n")
     with pfx_to_pem('certificate.p12', certpassword) as qcert:
         r = requests.get('https://certs.qualys.eu/msp/map_report_list.php', auth=HTTPBasicAuth(username, password), headers={'X-Requested-With': 'testing'}, cert=qcert)
         # print r.text
